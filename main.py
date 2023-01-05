@@ -1,4 +1,6 @@
 import numpy as np
+
+from grundloesung import *
 class FuzzyTrapez:
     def __init__(self, links, maximuml, maximumr, rechts):
         self.links = links
@@ -20,9 +22,9 @@ L  = 10
 b  = 0.2
 h1 = FuzzyTrapez(0.65, 0.7, 0.7, 0.75)
 h2 = FuzzyTrapez(0.48, 0.5, 0.5, 0.52)
-E  = FuzzyTrapez(2.05, 2.10, 2.12, 2.15)
+E  = FuzzyTrapez(2.05 * (10 ** 8), 2.10 * (10 ** 8), 2.12 * (10 ** 8), 2.15 * (10 ** 8))
 q  = FuzzyTrapez(14.0, 17.0, 18.5, 22.0)
-k  = FuzzyTrapez(0.8, 1.0, 1.0, 1.4)
+k  = FuzzyTrapez(0.8 * (10 ** 4), 1.0 * (10 ** 4), 1.0 * (10 ** 4), 1.4 * (10 ** 4))
 M_max = - np.inf
 M_min = + np.inf
 #brute force
@@ -50,8 +52,8 @@ for alpha in [0, 0.5, 1]:
                     k_temp = kl
                     while k_temp <= kr:
                         #folgende Zeile nur um den Code zu testen, ist dann zu löschen
-                        M= (h1_temp+h2_temp/E_temp) * q_temp / k_temp
-                        #M= grundlösung(L,b,h1_temp,h2_temp,E_temp,q_temp,k_temp)
+                        #M= (h1_temp+h2_temp/E_temp) * q_temp / k_temp
+                        M = grundloesung(L, b, h1_temp, h2_temp, E_temp, q_temp, k_temp)
                         if M < M_min:
                             M_min = M
                         if M > M_max:
@@ -62,5 +64,5 @@ for alpha in [0, 0.5, 1]:
             h2_temp = h2_temp + h2s
         h1_temp = h1_temp + h1s
 
-print('M_max =',M_max)
-print('M_min =',M_min)
+print('M_max =', M_max)
+print('M_min =', M_min)
