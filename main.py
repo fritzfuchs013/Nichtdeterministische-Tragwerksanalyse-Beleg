@@ -1,6 +1,4 @@
-import numpy as np
-
-from grundloesung import *
+import time
 from bruteforce import *
 class FuzzyTrapez:
     def __init__(self, links, maximuml, maximumr, rechts):
@@ -16,7 +14,6 @@ class FuzzyTrapez:
 
 a = FuzzyTrapez(1, 4, 4, 5)
 x, y = a.giveIntervall(0.1)
-print(x,y)
 
 # Eingangsgrößen
 L  = 10
@@ -30,12 +27,17 @@ k  = FuzzyTrapez(0.8 * (10 ** 4), 1.0 * (10 ** 4), 1.0 * (10 ** 4), 1.4 * (10 **
 M_max = - np.inf
 M_min = + np.inf
 
+print('program has started')
 #brute force
 # alpha lvl Schleife: (0, 0.5, 1)
 # Anzahl der Schritte pro Intervall:
-n = 10
+st = time.time()
+n = 20
 for alpha in [0, 0.5, 1]:
     M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha, M_max, M_min)
+et = time.time()
+elapsed_time = et - st
 
 print('M_max =', M_max)
 print('M_min =', M_min)
+print('benötigte Zeit:', elapsed_time)
