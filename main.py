@@ -1,5 +1,7 @@
 import time
 from bruteforce import *
+from genetic import *
+
 class FuzzyTrapez:
     def __init__(self, links, maximuml, maximumr, rechts):
         self.links = links
@@ -31,8 +33,8 @@ print('program has started')
 #brute force
 # alpha lvl Schleife: (0, 0.5, 1)
 # Anzahl der Schritte pro Intervall:
+n = 1
 st = time.time()
-n = 20
 for alpha in [0, 0.5, 1]:
     M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha, M_max, M_min)
 et = time.time()
@@ -41,3 +43,6 @@ elapsed_time = et - st
 print('M_max =', M_max)
 print('M_min =', M_min)
 print('benötigte Zeit:', elapsed_time)
+
+n=3
+ng = genetic(L, b, h1, h2, E, q, k, n, alpha)
