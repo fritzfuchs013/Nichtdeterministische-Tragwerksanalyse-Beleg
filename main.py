@@ -2,17 +2,7 @@ import time
 from bruteforce import *
 from genetic import *
 
-class FuzzyTrapez:
-    def __init__(self, links, maximuml, maximumr, rechts):
-        self.links = links
-        self.maximuml = maximuml
-        self.maximumr = maximumr
-        self.rechts = rechts
-
-    def giveIntervall(self, alphalvl : float) -> (float, float):
-        newLinks = self.links + alphalvl * (self.maximuml - self.links)
-        newRechts = self.maximumr - alphalvl * (self.rechts - self.maximumr)
-        return newLinks, newRechts
+from fuzzy import * 
 
 a = FuzzyTrapez(1, 4, 4, 5)
 x, y = a.giveIntervall(0.1)
