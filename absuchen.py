@@ -41,7 +41,7 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
             new_point = old_point + delta
             
             new_function_value = function(new_point)
-            print(new_point,new_function_value)
+            #print(new_point,new_function_value)
 
             is_in_bounds = True
             for para in range(0,parameter):
@@ -80,7 +80,7 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
                 break
             old_point = new_candidate_point
         else: 
-            schrittweite = schrittweite * 0.5
+            schrittweite = schrittweite * 0.7
     return old_point
 
 def test_func(werte):
