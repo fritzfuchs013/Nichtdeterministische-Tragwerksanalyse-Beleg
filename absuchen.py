@@ -14,7 +14,7 @@ def und(a,b):
 
 def strukturiertes_absuchen(function, initial_guess, parameterbereich):
     parameter = parameterbereich.shape[0]
-
+    #print(parameter)
     schrittweite = 1.0
     old_point = initial_guess
     old_function_value = math.inf
@@ -31,9 +31,9 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
             new_function_value = function(new_point)
 
             mn, mx = np.array(parameterbereich).T
-            x = new_point[:, None]
-            is_in_bounds = ((x > mn) & (x < mx)).any(1)
-            is_in_bounds = reduce(und, is_in_bounds)
+            is_in_bounds = True
+            for para in range(0,parameter):
+                is_in_bounds = new_point[i] > mn[i] and new_point[i] < mx[i] and is_in_bounds
             #print(is_in_bounds)
 
             if is_in_bounds and new_function_value < old_function_value:
@@ -48,10 +48,9 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
             new_point = old_point + delta
             new_function_value = function(new_point)
 
-            mn, mx = np.array(parameterbereich).T
-            x = new_point[:, None]
-            is_in_bounds = ((x > mn) & (x < mx)).any(1)
-            is_in_bounds = reduce(und, is_in_bounds)
+            is_in_bounds = True
+            for para in range(0,parameter):
+                is_in_bounds = new_point[i] > mn[i] and new_point[i] < mx[i] and is_in_bounds
             #print(is_in_bounds)
 
             if is_in_bounds and new_function_value < old_function_value:
@@ -59,7 +58,7 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
                 new_candidate_point = new_point
                 new_point_found = True
 
-        print(schrittweite, old_point, new_candidate_point)
+        #print(schrittweite, old_point, new_candidate_point)
         
 
         if new_point_found:
@@ -74,7 +73,7 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
     return new_candidate_point
 
 def test_func(werte):
-    return (werte[0]-3.5) ** 2 + werte[1] ** 2
+    return (werte[0]-3.5) ** 2 + werte[1] ** 2 + werte[2] ** 2
 
 def modifizierte_grundloesung(laenge, breite, vector):
     return grundloesung(laenge, breite, vector[0], vector[1], vector[2], vector[3], vector[4])
@@ -91,6 +90,9 @@ def strukturiertes_absuchen_grundloesung(L, b, h1, h2, Emodul, q, k, alpha):
     part_func = partial(modifizierte_grundloesung, L, b)
 
     parameterbereich = np.array([h1min_max, h2min_max, Emin_max, qmin_max, kmin_max])
-    initial_guess = np.average(parameterbereich)
+    initial_guess = np.average(parameterbereich,1)
+    print("i=",initial_guess)
 
-    M_min = strukturiertes_absuchen(modifizierte_grundloesung, initial_guess,parameterbereich)
+    M_min = strukturiertes_absuchen(part_func, initial_guess,parameterbereich)
+
+#strukturiertes_absuchen(test_func, np.array([1,-1.5,-1.5]), np.array([[-1,2],[-2,-1],[-2,-1]]))
