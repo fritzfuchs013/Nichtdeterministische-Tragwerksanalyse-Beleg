@@ -26,9 +26,9 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
     while itera < max_iter:
         
         #print(old_function_value)
+        itera = itera +1
         new_point_found = False
         for i in range(0,old_point.shape[0]):
-            itera = itera +1
             #print(itera,schrittweite)
             mn, mx = np.array(parameterbereich).T
             if schrittweite[i] < 1e-15:
@@ -39,7 +39,9 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
             delta[i] = schrittweite[i]
             #print(delta)
             new_point = old_point + delta
+            
             new_function_value = function(new_point)
+            print(new_point,new_function_value)
 
             is_in_bounds = True
             for para in range(0,parameter):
@@ -79,16 +81,16 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
             old_point = new_candidate_point
         else: 
             schrittweite = schrittweite * 0.5
-
-        
-
-    return new_candidate_point
+    return old_point
 
 def test_func(werte):
     return (werte[0]-3.5) ** 2 + werte[1] ** 2 + werte[2] ** 2
 
 def modifizierte_grundloesung(laenge, breite, vector):
     return grundloesung(laenge, breite, vector[0], vector[1], vector[2], vector[3], vector[4])
+
+def modifizierte_grundloesung_max(laenge, breite, vector):
+    return -grundloesung(laenge, breite, vector[0], vector[1], vector[2], vector[3], vector[4])
 
 def strukturiertes_absuchen_grundloesung(L, b, h1, h2, Emodul, q, k, alpha):
     # l = konst
@@ -100,13 +102,18 @@ def strukturiertes_absuchen_grundloesung(L, b, h1, h2, Emodul, q, k, alpha):
     kmin_max = k.giveIntervall(alpha)
 
     part_func = partial(modifizierte_grundloesung, L, b)
+    part_func_max = partial(modifizierte_grundloesung_max, L, b)
 
     parameterbereich = np.array([h1min_max, h2min_max, Emin_max, qmin_max, kmin_max])
     initial_guess = np.average(parameterbereich,1)
     #print("i=",initial_guess)
 
     M_min = strukturiertes_absuchen(part_func, initial_guess,parameterbereich)
+    M_min = part_func(M_min)
 
-    return 0.0, M_min
+    M_max = strukturiertes_absuchen(part_func_max, initial_guess,parameterbereich)
+    M_max = -part_func_max(M_max)
+
+    return M_min, M_max
 
 strukturiertes_absuchen(test_func, np.array([-50,-1,-1.5]), np.array([[-100,200],[-1,-1],[-2,-1]]))
