@@ -23,7 +23,7 @@ print('program has started')
 #brute force
 # alpha lvl Schleife: (0, 0.5, 1)
 # Anzahl der Schritte pro Intervall:
-n = 1
+n = 10
 st = time.time()
 for alpha in [0, 0.5, 1]:
     M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha, M_max, M_min)
@@ -35,4 +35,4 @@ print('M_min =', M_min)
 print('benötigte Zeit:', elapsed_time)
 
 n=3
-ng = genetic(L, b, h1, h2, E, q, k, n, alpha)
+#ng = genetic(L, b, h1, h2, E, q, k, n, alpha)
