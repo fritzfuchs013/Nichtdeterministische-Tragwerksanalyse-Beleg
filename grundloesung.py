@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.integrate import quad
+#from scipy.integrate import simps
 
 
 def grundloesung(L, b, h_1, h_2, E, q, k):
@@ -22,27 +23,29 @@ def grundloesung(L, b, h_1, h_2, E, q, k):
     def z(x):
         return (M_1(x) ** 2) / (E * I(x))
 
-    delta_10, err = quad(y, 0, L)
+    delta_10, err1 = quad(y, 0, L)
 
-    delta_11, err = quad(z, 0, L)
+    delta_11, err2 = quad(z, 0, L)
 
+    delta_11 = delta_11 + (1.0 / k)
 
-    delta_11 = delta_11 * 1.0 / k
-
-    print("delta")
-    print(delta_10)
-    print(delta_11)
+    #print("delta")
+    #print(delta_10)
+    #print(delta_11)
 
     X_1 = -(delta_10 / delta_11)
 
     moment_Einspannung = M_0(0.0) + X_1 * M_1(0.0)
 
-    print(M_0(0.0))
-    print(M_1(0.0))
+    #print(M_0(0.0))
+    #print(M_1(0.0))
 
     return moment_Einspannung
 
 
-m = grundloesung(10, 0.2, 0.7, 0.5, 2.1 * (10 ** 8), 17, 1 * (10 ** 4))
+#m = grundloesung(10, 0.2, 0.7, 0.5, 2.1 * (10 ** 8), 17, 1 * (10 ** 4))
 
-print(m)
+#print(m)
+
+
+
