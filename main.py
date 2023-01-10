@@ -2,7 +2,7 @@ import time
 from matplotlib import pyplot as plt
 from bruteforce import *
 from genetic import *
-
+from absuchen import * 
 from fuzzy import * 
 
 a = FuzzyTrapez(1, 4, 4, 5)
@@ -41,6 +41,23 @@ print('benötigte Zeit:', elapsed_time)
 
 plt.show()
 plt.savefig("out.png")
+
+st = time.time()
+
+for alpha in [0.0, 0.5, 1.0]:
+    M_max, M_min = strukturiertes_absuchen_grundloesung(L, b, h1, h2, E, q, k, alpha)
+    print(M_max, M_min)
+
+    x_coordinates = [M_min, M_max]
+    y_coordinates = [alpha, alpha]
+    plt.plot(x_coordinates, y_coordinates, color="navy")
+
+et = time.time()
+elapsed_time = et - st
+
+print('M_max =', M_max)
+print('M_min =', M_min)
+print('benötigte Zeit:', elapsed_time)
 
 n=3
 #ng = genetic(L, b, h1, h2, E, q, k, n, alpha)

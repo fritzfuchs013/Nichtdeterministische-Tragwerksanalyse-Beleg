@@ -15,51 +15,55 @@ def und(a,b):
 def strukturiertes_absuchen(function, initial_guess, parameterbereich):
     parameter = parameterbereich.shape[0]
 
-    schrittweite = 1.0
+    schrittweite = np.abs(np.average(parameterbereich,1) - parameterbereich.T[0])*0.9
     old_point = initial_guess
-    old_function_value = math.inf
+    #print(initial_guess.shape)
+    old_function_value = -math.inf
     new_candidate_point = np.zeros(old_point.shape[0])
 
-    while True:
+    max_iteration = 1000
+    itr = 0
+
+    while itr < max_iteration:
         #print(old_function_value)
         new_point_found = False
         for i in range(0,old_point.shape[0]):
             delta = np.zeros(old_point.shape[0])
-            delta[i] = schrittweite
+            delta[i] = schrittweite[i]
             #print(delta)
             new_point = old_point + delta
             new_function_value = function(new_point)
 
             mn, mx = np.array(parameterbereich).T
-            x = new_point[:, None]
-            is_in_bounds = ((x > mn) & (x < mx)).any(1)
-            is_in_bounds = reduce(und, is_in_bounds)
+            is_in_bounds = True
+            for para in range(parameter):
+                is_in_bounds = is_in_bounds and mn[para] < new_point[para] and mx[para] > new_point[para]
             #print(is_in_bounds)
 
-            if is_in_bounds and new_function_value < old_function_value:
+            if is_in_bounds and new_function_value > old_function_value:
                 old_function_value = new_function_value
                 new_candidate_point = new_point
                 new_point_found = True
 
             # das ganze nochmal in andere raumrichtung
             delta = np.zeros(old_point.shape[0])
-            delta[i] = - schrittweite
+            delta[i] = - schrittweite[i]
             #print(delta)
             new_point = old_point + delta
+            #print(delta, new_point - old_point, new_point)
             new_function_value = function(new_point)
 
-            mn, mx = np.array(parameterbereich).T
-            x = new_point[:, None]
-            is_in_bounds = ((x > mn) & (x < mx)).any(1)
-            is_in_bounds = reduce(und, is_in_bounds)
+            is_in_bounds = True
+            for para in range(parameter):
+                is_in_bounds = is_in_bounds and mn[para] < new_point[para] and mx[para] > new_point[para]
             #print(is_in_bounds)
 
-            if is_in_bounds and new_function_value < old_function_value:
+            if is_in_bounds and new_function_value > old_function_value:
                 old_function_value = new_function_value
                 new_candidate_point = new_point
                 new_point_found = True
 
-        print(schrittweite, old_point, new_candidate_point)
+        #print(schrittweite, old_point, new_point_found, new_candidate_point)
         
 
         if new_point_found:
@@ -69,7 +73,7 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
         else: 
             schrittweite = schrittweite * 0.5
 
-        
+        itr = itr +1
 
     return new_candidate_point
 
@@ -91,6 +95,9 @@ def strukturiertes_absuchen_grundloesung(L, b, h1, h2, Emodul, q, k, alpha):
     part_func = partial(modifizierte_grundloesung, L, b)
 
     parameterbereich = np.array([h1min_max, h2min_max, Emin_max, qmin_max, kmin_max])
-    initial_guess = np.average(parameterbereich)
+    initial_guess = np.average(parameterbereich,1)
 
-    M_min = strukturiertes_absuchen(modifizierte_grundloesung, initial_guess,parameterbereich)
+    M_min = strukturiertes_absuchen(part_func, initial_guess,parameterbereich)
+    M_min = part_func(M_min)
+
+    return M_min, 0.0
