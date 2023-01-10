@@ -6,8 +6,8 @@ from genetic import *
 from fuzzy import * 
 
 a = FuzzyTrapez(1, 4, 4, 5)
-x, y = a.giveIntervall(0.1)
-
+x, y = a.giveIntervall(1)
+print(x,y)
 # Eingangsgrößen
 L  = 10
 b  = 0.2
@@ -17,17 +17,16 @@ E  = FuzzyTrapez(2.05 * (10 ** 8), 2.10 * (10 ** 8), 2.12 * (10 ** 8), 2.15 * (1
 q  = FuzzyTrapez(14.0, 17.0, 18.5, 22.0)
 k  = FuzzyTrapez(0.8 * (10 ** 4), 1.0 * (10 ** 4), 1.0 * (10 ** 4), 1.4 * (10 ** 4))
 
-M_max = - np.inf
-M_min = + np.inf
-
 print('program has started')
 #brute force
 # alpha lvl Schleife: (0, 0.5, 1)
 # Anzahl der Schritte pro Intervall:
 n = 10
 st = time.time()
-for alpha in [0, 0.5, 1]:
-    M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha, M_max, M_min)
+
+for alpha in [0.0, 0.5, 1.0]:
+    M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha)
+    print(M_max, M_min)
 
     x_coordinates = [M_min, M_max]
     y_coordinates = [alpha, alpha]
