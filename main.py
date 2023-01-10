@@ -1,4 +1,5 @@
 import time
+from matplotlib import pyplot as plt
 from bruteforce import *
 from genetic import *
 
@@ -27,12 +28,20 @@ n = 10
 st = time.time()
 for alpha in [0, 0.5, 1]:
     M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha, M_max, M_min)
+
+    x_coordinates = [M_min, M_max]
+    y_coordinates = [alpha, alpha]
+    plt.plot(x_coordinates, y_coordinates, color="navy")
+
 et = time.time()
 elapsed_time = et - st
 
 print('M_max =', M_max)
 print('M_min =', M_min)
 print('benötigte Zeit:', elapsed_time)
+
+plt.show()
+plt.savefig("out.png")
 
 n=3
 #ng = genetic(L, b, h1, h2, E, q, k, n, alpha)
