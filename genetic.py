@@ -28,12 +28,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
 
         return population
 
-    pop1 = create_population(L, b, h1, h2, E, q, k, alpha)
-
-    return pop1
-
-
- """   def calc_fitness(population, L, b):
+  def calc_fitness(population, L, b):
         x,y = np.array.size(population)
         M_max_array = [x, 1]
         M_min_array = [x, 1]
@@ -55,16 +50,23 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
 
     def crossover(population):
         #neue individuum mit gecrossten Eigenschaften
-        population_cross_1 = np.zeros_like(population)
-        population_cross_2 = np.zeros_like(population)
         x, y = np.array.size(population)
+        population_cross_child_1 = np.array((x / 2.0), y)
+        population_cross_child_2 = np.array((x / 2.0), y)
 
-        for i in range(x):
+        for i in range(x/2):
             for j in range(y-2):
-                population_cross_1 [i,j] = population
+                if j <= ((y-2) / 2):
+                    population_cross_child_1 [i, j] = population[i, j]
+                    population_cross_child_2 [-i, j] = population[-i, j]
+                if j > ((y-2) / 2):
+                    population_cross_child_1[i, j] = population[-i, j]
+                    population_cross_child_2[-i, j] = population[i, j]
 
+        population_crossed = np.vstack(population, population_cross_child_1)
+        population_crossed = np.vstack(population_crossed, population_cross_child_2)
 
-
+        return population_crossed
 
     population = definepop(h1, h2, E, q, k, alpha)
     population = calc_fitness(population, L, b)
@@ -78,6 +80,5 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
 
     #Kreuzen der Eigenschaften
 
-"""
 
 
