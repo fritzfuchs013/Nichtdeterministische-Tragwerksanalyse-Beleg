@@ -6,6 +6,9 @@ class FuzzyTrapez:
         self.rechts = rechts
 
     def giveIntervall(self, alphalvl : float) -> (float, float):
-        newLinks = self.links + alphalvl * (self.maximuml - self.links)
-        newRechts = self.maximumr - alphalvl * (self.rechts - self.maximumr)
-        return newLinks, newRechts
+        m_links  = 1.0 / (self.maximuml - self.links)
+        m_rechts = 1.0 / (self.maximumr - self.rechts)
+
+        new_links  = self.links + (alphalvl / m_links)
+        new_rechts = self.maximumr + ((alphalvl -1 ) / m_rechts)
+        return new_links, new_rechts
