@@ -5,25 +5,35 @@ from grundloesung import *
 def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
     #Anzahl der Individuen
     n = 40
-    def definegene(fg, alpha):
-        low, high = fg.giveintervall(alpha)
+
+    def create_gene(fzzy_Gr, alpha):
+        low, high = fzzy_Gr.giveintervall(alpha)
         gene = np.random.uniform(low, high)
         return gene
 
-    def definepop(h1, h2, E, q, k, alpha):
-        pop = np.array(5)
+    def create_individuum(h1, h2, E, q, k, alpha):
+        individuum = np.array(5)
 
-        for fg in (h1, h2, E, q, k):
-            i = 0
-            pop[i] = definegene(fg, alpha)
+        i = 0
+        for fzzy_Gr in (h1, h2, E, q, k):
+            individuum[i] = create_gene(fzzy_Gr, alpha)
+            i = i + 1
+        return individuum
 
-    new_population = np.array((n, 5))
-    for i in range(n):
-        new_population = np.vstack((new_population, definepop(h1, h2, E, q, k, alpha)))
+    def create_population(h1, h2, E, q, k, alpha):
+        population = create_individuum(h1, h2, E, q, k, alpha)
 
-    return new_population
+        for i in range(n-1):
+            population = np.vstack(population, create_individuum(h1, h2, E, q, k, alpha))
 
-    def calc_fitness(population, L, b):
+        return population
+
+    pop1 = create_population(L, b, h1, h2, E, q, k, alpha)
+
+    return pop1
+
+
+ """   def calc_fitness(population, L, b):
         x,y = np.array.size(population)
         M_max_array = [x, 1]
         M_min_array = [x, 1]
@@ -44,7 +54,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
         return  population
 
     def crossover(population):
-        #neue population mit gecrossten Eigenschaften
+        #neue individuum mit gecrossten Eigenschaften
         population_cross_1 = np.zeros_like(population)
         population_cross_2 = np.zeros_like(population)
         x, y = np.array.size(population)
@@ -67,5 +77,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
         population = np.delete(population, 0)
 
     #Kreuzen der Eigenschaften
+
+"""
 
 

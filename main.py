@@ -43,12 +43,11 @@ print('benötigte Zeit:', elapsed_time_bruteforce)
 plt.show()
 plt.savefig("out.png")
 
-#n=3
-#ng = genetic(L, b, h1, h2, E, q, k, n, alpha)
+print(genetic_algorithm(L, b, h1, h2, E, q, k, alpha))
 
 start_time = time.time()
 
-for alpha in [0.0, 0.5, 1.0]:
+"""for alpha in [0.0, 0.5, 1.0]:
     M_min, M_max = strukturiertes_absuchen_grundloesung(L, b, h1, h2, E, q, k, alpha)
     print(alpha, M_min, M_max)
 
@@ -68,4 +67,4 @@ print('benötigte Zeit:', elapsed_time)
 #elapsed_time_gauss = et_gauss - st_gauss
 #print('M_max =', M_max)
 #print('M_min =', M_min)
-#print('benötigte Zeit:', elapsed_time_gauss)
+#print('benötigte Zeit:', elapsed_time_gauss) """
