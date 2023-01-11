@@ -18,7 +18,7 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
     schrittweite = 0.9*np.abs(np.average(parameterbereich,1) - np.array(parameterbereich).T[0])
     #print(schrittweite)
     old_point = initial_guess
-    old_function_value = math.inf
+    old_function_value = function(initial_guess)
     new_candidate_point = np.zeros(old_point.shape[0])
     max_iter = 1000
     itera = 0
@@ -112,7 +112,7 @@ def strukturiertes_absuchen_grundloesung(L, b, h1, h2, Emodul, q, k, alpha):
     M_min = part_func(M_min)
 
     M_max = strukturiertes_absuchen(part_func_max, initial_guess,parameterbereich)
-    M_max = -part_func_max(M_max)
+    M_max = part_func(M_max)
 
     return M_min, M_max
 
