@@ -2,7 +2,7 @@ import time
 from matplotlib import pyplot as plt
 from bruteforce import *
 from gausgrit import *
-# from genetic import *
+from genetic import *
 from absuchen import *
 from fuzzy import * 
 
@@ -57,7 +57,8 @@ plt.savefig("plot_BruteForce.png")
 
 
 # Testen des Darwin-Algorithmus -----------------------------------------------------------------------
-# print(genetic_algorithm(L, b, h1, h2, E, q, k, alpha))
+for alpha in [0.0]:
+    print(genetic_algorithm(L, b, h1, h2, E, q, k, alpha))
 
 
 # Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
