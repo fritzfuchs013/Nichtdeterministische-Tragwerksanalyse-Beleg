@@ -67,7 +67,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
         population_crossed = np.vstack(population_crossed, population_cross_child_2)
 
         return population_crossed
-
+#test
     population = definepop(h1, h2, E, q, k, alpha)
     population = calc_fitness(population, L, b)
     #Sortieren nach vorletzter Spalte, d.h. nach M_max
