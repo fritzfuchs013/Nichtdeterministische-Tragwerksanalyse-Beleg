@@ -1,8 +1,9 @@
 import time
 from matplotlib import pyplot as plt
 from bruteforce import *
+from gausgrit import *
 from genetic import *
-
+from absuchen import *
 from fuzzy import * 
 
 a = FuzzyTrapez(1, 4, 4, 5)
@@ -21,8 +22,8 @@ print('program has started')
 #brute force
 # alpha lvl Schleife: (0, 0.5, 1)
 # Anzahl der Schritte pro Intervall:
-n = 10
-st = time.time()
+n = 1
+st_bruteforce = time.time()
 
 for alpha in [0.0, 0.5, 1.0]:
     M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha)
@@ -32,15 +33,39 @@ for alpha in [0.0, 0.5, 1.0]:
     y_coordinates = [alpha, alpha]
     plt.plot(x_coordinates, y_coordinates, color="navy")
 
-et = time.time()
-elapsed_time = et - st
+et_bruteforce = time.time()
+elapsed_time_bruteforce = et_bruteforce - st_bruteforce
+
+print('M_max =', M_max)
+print('M_min =', M_min)
+print('benötigte Zeit:', elapsed_time_bruteforce)
+
+plt.show()
+plt.savefig("out.png")
+
+#n=3
+#ng = genetic(L, b, h1, h2, E, q, k, n, alpha)
+
+start_time = time.time()
+
+for alpha in [0.0, 0.5, 1.0]:
+    M_min, M_max = strukturiertes_absuchen_grundloesung(L, b, h1, h2, E, q, k, alpha)
+    print(alpha, M_min, M_max)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
 
 print('M_max =', M_max)
 print('M_min =', M_min)
 print('benötigte Zeit:', elapsed_time)
 
-plt.show()
-plt.savefig("out.png")
+#t_gauss = time.time()
+#for alpha in [0, 0.5, 1]:
+ #   M_max, M_min, n = gauss_grit(L, b, h1, h2, E, q, k, 3, alpha)
+ #   print(M_max, M_min, n)
 
-n=3
-#ng = genetic(L, b, h1, h2, E, q, k, n, alpha)
+#et_bruteforce = time.time()
+#elapsed_time_gauss = et_gauss - st_gauss
+#print('M_max =', M_max)
+#print('M_min =', M_min)
+#print('benötigte Zeit:', elapsed_time_gauss)
