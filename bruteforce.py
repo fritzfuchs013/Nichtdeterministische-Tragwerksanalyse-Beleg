@@ -3,6 +3,8 @@ from scipy.integrate import quad
 
 
 def bruteforce(L, b, h1, h2, E, q, k, n, alpha):
+    #Tracker Grundloesungsaufrufe
+    tracker_brut = 0
     M_max = - np.inf
     M_min = + np.inf
     # Folgend: Schleifen über h1, h2, E, q und k
@@ -35,6 +37,7 @@ def bruteforce(L, b, h1, h2, E, q, k, n, alpha):
                     k_temp = kl
                     while k_temp <= kr:
                         M = grundloesung(L, b, h1_temp, h2_temp, E_temp, q_temp, k_temp)
+                        tracker_brut += 1
                         if M < M_min:
                             M_min = M
                         if M > M_max:
@@ -44,4 +47,4 @@ def bruteforce(L, b, h1, h2, E, q, k, n, alpha):
                 E_temp = E_temp + Es
             h2_temp = h2_temp + h2s
         h1_temp = h1_temp + h1s
-    return M_max, M_min
+    return M_max, M_min, tracker_brut

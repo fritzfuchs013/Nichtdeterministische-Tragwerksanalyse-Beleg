@@ -26,16 +26,20 @@ print('program has started')
 startTime_bruteforce = time.time()
 
 # Anzahl der Schritte pro Intervall:
-n = 1
+n = 2
 
 # Initiierung Algorithmus über alle alpha level in der Schleife: (0, 0.5, 1)
+tracker_brut = 0
 for alpha in [0.0, 0.5, 1.0]:
-    M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha)
+    tracker_temp = 0
+    M_max, M_min, tracker_temp = bruteforce(L, b, h1, h2, E, q, k, n, alpha)
 
     # Kontrolle der einzelnen errechneten Intervalle in der Konsolenausgabe
     print("-------------------------------------------------------")
     print('M_max =', M_max)
     print('M_min =', M_min)
+
+    tracker_brut = tracker_brut + tracker_temp
 
     # Erstellung Plot des jeweiligen alpha-lvl Intervalls
     x_coordinates = [M_min, M_max]
@@ -49,9 +53,13 @@ elapsed_time_bruteforce = endTime_bruteforce - startTime_bruteforce
 # Ausgabe der benötigten Zeit
 print("---------------------------------------------------------------")
 print('benötigte Zeit:', elapsed_time_bruteforce)
+print('benötigte Aufrufe Grundloesung:', tracker_brut)
 
 # Ausgabe Plot
 #plt.show()
+plt.title("Brute Force Optimierung")
+plt.xlabel("Moment in kNM")
+plt.ylabel("Möglichkeit")
 plt.savefig("plot_BruteForce.png")
 
 
@@ -59,15 +67,18 @@ plt.savefig("plot_BruteForce.png")
 startTime_genetic = time.time()
 M_max_array = np.zeros((7, 5))
 i = 0
+
 for n_gen in (1, 3, 5, 10, 20, 50, 100):
     for j in range(5):
         for alpha in [0.0]:
             M_max = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
-            print('M_max Evolutioniert zuuuuuuu:', M_max)
-            #print('M_min digitiert zuuuuuuu:', M_min)
+
+            print('M_max Evolutioniert zu:', M_max)
+            #print('M_min digitiert zu:', M_min)
             print('----------------')
             M_max_array[i, j] = M_max
     i= i +1
+
 print(M_max_array)
     # Erstellung Plot des jeweiligen alpha-lvl Intervalls
     #x_coordinates = [M_min, M_max]
