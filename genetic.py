@@ -72,6 +72,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
 
     population = create_population(h1, h2, E, q, k, alpha)
     population = calc_fitness(population, L, b)
+    print(population)
     population = crossover(population)
     return population
         
