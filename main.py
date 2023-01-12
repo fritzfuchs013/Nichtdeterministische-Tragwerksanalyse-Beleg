@@ -1,7 +1,6 @@
 import time
 from matplotlib import pyplot as plt
 from bruteforce import *
-from gausgrit import *
 from genetic import *
 from absuchen import *
 from fuzzy import * 
@@ -26,11 +25,11 @@ print('program has started')
 startTime_bruteforce = time.time()
 
 # Anzahl der Schritte pro Intervall:
-n = 2
+n = 10
 
 # Initiierung Algorithmus über alle alpha level in der Schleife: (0, 0.5, 1)
 tracker_brut = 0
-for alpha in [0.0, 0.5, 1.0]:
+for alpha in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
     tracker_temp = 0
     M_max, M_min, tracker_temp = bruteforce(L, b, h1, h2, E, q, k, n, alpha)
 
@@ -64,6 +63,7 @@ plt.savefig("plot_BruteForce.png")
 
 
 # Testen des Darwin-Algorithmus -----------------------------------------------------------------------
+"""
 startTime_genetic = time.time()
 M_max_array = np.zeros((7, 5))
 i = 0
@@ -102,7 +102,7 @@ plt.savefig("plot_genetic.png")
 
 # Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
 """
-
+"""
 start_time = time.time()
 
 for alpha in [0.0, 0.5, 1.0]:
@@ -116,15 +116,5 @@ print('M_max =', M_max)
 print('M_min =', M_min)
 print('benötigte Zeit:', elapsed_time)
 
-#t_gauss = time.time()
-#for alpha in [0, 0.5, 1]:
- #   M_max, M_min, n = gauss_grit(L, b, h1, h2, E, q, k, 3, alpha)
- #   print(M_max, M_min, n)
-
-#et_bruteforce = time.time()
-#elapsed_time_gauss = et_gauss - st_gauss
-#print('M_max =', M_max)
-#print('M_min =', M_min)
-#print('benötigte Zeit:', elapsed_time_gauss)
 
 """
