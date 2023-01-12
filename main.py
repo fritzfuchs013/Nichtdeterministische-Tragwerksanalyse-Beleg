@@ -84,7 +84,7 @@ print('benötigte Zeit:', elapsed_time_genetic)
 
 # Ausgabe Plot
 #plt.show()
-plt.label("Brute Force Optimierung")
+plt.title("Brute Force Optimierung")
 plt.savefig("plot_genetic.png")
 
 # Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
