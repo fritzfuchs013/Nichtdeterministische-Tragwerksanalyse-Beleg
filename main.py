@@ -1,6 +1,7 @@
 import time
 from matplotlib import pyplot as plt
 from bruteforce import *
+from gausgrit import *
 from genetic import *
 from absuchen import *
 from fuzzy import * 
@@ -25,20 +26,16 @@ print('program has started')
 startTime_bruteforce = time.time()
 
 # Anzahl der Schritte pro Intervall:
-n = 10
+n = 1
 
 # Initiierung Algorithmus über alle alpha level in der Schleife: (0, 0.5, 1)
-tracker_brut = 0
-for alpha in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
-    tracker_temp = 0
-    M_max, M_min, tracker_temp = bruteforce(L, b, h1, h2, E, q, k, n, alpha)
+for alpha in [0.0, 0.5, 1.0]:
+    M_max, M_min = bruteforce(L, b, h1, h2, E, q, k, n, alpha)
 
     # Kontrolle der einzelnen errechneten Intervalle in der Konsolenausgabe
     print("-------------------------------------------------------")
     print('M_max =', M_max)
     print('M_min =', M_min)
-
-    tracker_brut = tracker_brut + tracker_temp
 
     # Erstellung Plot des jeweiligen alpha-lvl Intervalls
     x_coordinates = [M_min, M_max]
@@ -52,33 +49,25 @@ elapsed_time_bruteforce = endTime_bruteforce - startTime_bruteforce
 # Ausgabe der benötigten Zeit
 print("---------------------------------------------------------------")
 print('benötigte Zeit:', elapsed_time_bruteforce)
-print('benötigte Aufrufe Grundloesung:', tracker_brut)
 
 # Ausgabe Plot
 #plt.show()
-plt.title("Brute Force Optimierung")
-plt.xlabel("Moment in kNM")
-plt.ylabel("Möglichkeit")
 plt.savefig("plot_BruteForce.png")
 
 
 # Testen des Darwin-Algorithmus -----------------------------------------------------------------------
-"""
 startTime_genetic = time.time()
 M_max_array = np.zeros((7, 5))
 i = 0
-
 for n_gen in (1, 3, 5, 10, 20, 50, 100):
     for j in range(5):
         for alpha in [0.0]:
             M_max = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
-
-            print('M_max Evolutioniert zu:', M_max)
-            #print('M_min digitiert zu:', M_min)
+            print('M_max Evolutioniert zuuuuuuu:', M_max)
+            #print('M_min digitiert zuuuuuuu:', M_min)
             print('----------------')
             M_max_array[i, j] = M_max
     i= i +1
-
 print(M_max_array)
     # Erstellung Plot des jeweiligen alpha-lvl Intervalls
     #x_coordinates = [M_min, M_max]
@@ -102,7 +91,7 @@ plt.savefig("plot_genetic.png")
 
 # Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
 """
-"""
+
 start_time = time.time()
 
 for alpha in [0.0, 0.5, 1.0]:
@@ -116,5 +105,15 @@ print('M_max =', M_max)
 print('M_min =', M_min)
 print('benötigte Zeit:', elapsed_time)
 
+#t_gauss = time.time()
+#for alpha in [0, 0.5, 1]:
+ #   M_max, M_min, n = gauss_grit(L, b, h1, h2, E, q, k, 3, alpha)
+ #   print(M_max, M_min, n)
+
+#et_bruteforce = time.time()
+#elapsed_time_gauss = et_gauss - st_gauss
+#print('M_max =', M_max)
+#print('M_min =', M_min)
+#print('benötigte Zeit:', elapsed_time_gauss)
 
 """
