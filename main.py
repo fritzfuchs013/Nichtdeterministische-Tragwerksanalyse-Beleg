@@ -48,19 +48,46 @@ elapsed_time_bruteforce = endTime_bruteforce - startTime_bruteforce
 
 # Ausgabe der benötigten Zeit
 print("---------------------------------------------------------------")
-# print()
 print('benötigte Zeit:', elapsed_time_bruteforce)
 
 # Ausgabe Plot
-# plt.show()
+#plt.show()
 plt.savefig("plot_BruteForce.png")
 
 
 # Testen des Darwin-Algorithmus -----------------------------------------------------------------------
-for alpha in [0.0]:
-    M_max = genetic_algorithm(L, b, h1, h2, E, q, k, alpha)
-    print('M_max Evolutioniert zuuuuuuu:', M_max)
+startTime_genetic = time.time()
+M_max_array = np.zeros((7, 5))
+i = 0
+for n_gen in (1, 3, 5, 10, 20, 50, 100):
+    for j in range(5):
+        for alpha in [0.0]:
+            M_max = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
+            print('M_max Evolutioniert zuuuuuuu:', M_max)
+            #print('M_min digitiert zuuuuuuu:', M_min)
+            print('----------------')
+            M_max_array[i, j] = M_max
+    i= i +1
+print(M_max_array)
+    # Erstellung Plot des jeweiligen alpha-lvl Intervalls
+    #x_coordinates = [M_min, M_max]
+    #y_coordinates = [alpha, alpha]
+    #plt.plot(x_coordinates, y_coordinates, color="navy")
 
+    # Erstellen Plot von Streuung zu Nummer von Generationen
+
+
+# Ende Timer und Bildung Differenz
+endTime_genetic = time.time()
+elapsed_time_genetic = endTime_genetic - startTime_genetic
+
+# Ausgabe der benötigten Zeit
+print("---------------------------------------------------------------")
+print('benötigte Zeit:', elapsed_time_genetic)
+
+# Ausgabe Plot
+#plt.show()
+plt.savefig("plot_genetic.png")
 
 # Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
 """

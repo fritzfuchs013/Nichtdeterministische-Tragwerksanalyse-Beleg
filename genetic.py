@@ -2,9 +2,9 @@ import numpy as np
 from grundloesung import *
 
 
-def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
-    #Anzahl der Individuen
-    n = 4
+def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
+    #Anzahl der Individuen (Muss eine Gerade Zahl sein)
+    n = 80
 
     def create_gene(fzzy_Gr, alpha):
         low, high = fzzy_Gr.giveIntervall(alpha)
@@ -12,7 +12,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
         return gene
 
     def create_individuum(h1, h2, E, q, k, alpha):
-        individuum = np.empty((5))
+        individuum = np.zeros((6))
 
         i = 0
         for fzzy_Gr in (h1, h2, E, q, k):
@@ -32,7 +32,6 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
 
     def calc_fitness(population, L, b):
         rows = population.shape[0]
-        fitness_array = np.empty((rows))
 
         for i in range(rows):
             h1 = population[i, 0]
@@ -41,17 +40,12 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
             q  = population[i, 3]
             k  = population[i, 4]
 
-            fitness = grundloesung(L, b, h1, h2, E, q, k)
-            fitness_array[i] = fitness
-
-        fitness_array_trans = fitness_array.reshape((rows, 1))
-        population = np.append(population, fitness_array_trans, axis=1)
+            population[i, 5] = grundloesung(L, b, h1, h2, E, q, k)
         return  population
 
 
     def crossover(population):
         #neue individuum mit gecrossten Eigenschaften
-        print(population)
         x, y = population.shape
         #x = population.shape[0]
         #y = population.shape[1]
@@ -77,50 +71,58 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha):
 
         for i in range(rows):
             j = 0
+
             for fzzy_Gr in (h1, h2, E, q, k):
                 low, high = fzzy_Gr.giveIntervall(alpha)
-                if population [i, j] > low and population [i, j] < high:
-                    delta = 0.01 * np.random.uniform(low, high) * np.random.choice((-1, 1))
-                    population [i,j] = population[i, j] + delta
-                    if  population [i, j] < low:
-                        population [i, j] = low
-                    if  population[i, j] > high:
-                        population[i, j] = high
+                delta = 0.0005 * np.random.uniform(low, high) * np.random.choice((-1, 1))
+                population [i,j] = population[i, j] + delta
+
+                if  population [i, j] < low:
+                    population [i, j] = low
+
+                if  population[i, j] > high:
+                    population[i, j] = high
+
                 j = j+1
         return population
 
-
+# optimierung nach M_max: ---------------------------------------------------------
     population = create_population(h1, h2, E, q, k, alpha)
-    print(population)
-    for i in range(10):
+
+    for i in range(n_gen):
         population = calc_fitness(population, L, b)
-        population = np.argsort(population, axis=-1)
+        population = population[np.argsort(population[:, -1])]
+
         # Aussortieren der Schlechtesten Indiviuuen
         rows = population.shape[0]
-        for i in range(int(rows / 2)):
-            # index "0" löscht die schlechteste fitness, mit "-1" lscht man die beste (je nachdem ob man nach Max or Min optimiert
-            population = np.delete(population, 0, axis=0)
+        for j in range(int(rows / 2)):
+            # index für "obj=0" löscht die schlechteste fitness, mit "obj=-1" löscht man die beste (je nachdem ob man nach Max or Min optimiert
+            population = np.delete(population, obj=0, axis=0)
 
         population = crossover(population)
         population = mutation(population, h1, h2, E, q, k, alpha)
 
-    M_max = population[0, 5]
+    population = calc_fitness(population, L, b)
+    M_max = population[-0, 5]
+
+# optimierung nach M_min: ---------------------------------------------------------
+    population = create_population(h1, h2, E, q, k, alpha)
+
+    for i in range(n_gen):
+        population = calc_fitness(population, L, b)
+        population = population[np.argsort(population[:, -1])]
+
+        # Aussortieren der Schlechtesten Indiviuuen
+        rows = population.shape[0]
+        for j in range(int(rows / 2)):
+            # index für "obj=0" löscht die schlechteste fitness, mit "obj=-0" löscht man die beste (je nachdem ob man nach Max or Min optimiert
+            population = np.delete(population, obj=-1, axis=0)
+
+        population = crossover(population)
+        population = mutation(population, h1, h2, E, q, k, alpha)
+
+    population = calc_fitness(population, L, b)
+    M_min = population[-1, 5]
+
 
     return M_max
-        
-"""    
-#test
-    population = definepop(h1, h2, E, q, k, alpha)
-    population = calc_fitness(population, L, b)
-    #Sortieren nach vorletzter Spalte, d.h. nach M_max
-    population = np.argsort(population, axis=-2)
-    #Löschen der Schlechtesten Individuen
-    x, y = np.array.size(population)
-
-    for i in range(x/2 ?????????):
-        population = np.delete(population, 0)
-
-    #Kreuzen der Eigenschaften
-
-"""
-
