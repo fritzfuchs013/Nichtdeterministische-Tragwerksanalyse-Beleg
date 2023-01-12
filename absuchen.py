@@ -8,11 +8,15 @@ from grundloesung import grundloesung
 from fuzzy import FuzzyTrapez
 # parameterbereich hat n paare an oberen und unteren Grenzen
 # 
+import matplotlib.pyplot as plt
 
 def und(a,b):
     return a and b
 
 def strukturiertes_absuchen(function, initial_guess, parameterbereich):
+    ####
+    plt.style.use('_mpl-gallery')
+    ####
     parameter = parameterbereich.shape[0]
     #print(parameter)
     schrittweite = 0.9*np.abs(np.average(parameterbereich,1) - np.array(parameterbereich).T[0])
@@ -22,6 +26,9 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
     new_candidate_point = np.zeros(old_point.shape[0])
     max_iter = 1000
     itera = 0
+    
+    point_data_x = np.array(old_point[0])
+    point_data_y = np.array(old_point[1])
 
     while itera < max_iter:
         
@@ -39,7 +46,7 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
             delta[i] = schrittweite[i]
             #print(delta)
             new_point = old_point + delta
-            
+
             new_function_value = function(new_point)
             #print(new_point,new_function_value)
 
@@ -48,6 +55,9 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
                 if schrittweite[para] < 1e-15: continue
                 is_in_bounds = new_point[para] >= mn[para] and new_point[para] <= mx[para] and is_in_bounds
             #print(is_in_bounds)
+
+            point_data_x = np.append(point_data_x, new_point[0])
+            point_data_y = np.append(point_data_y, new_point[1])
 
             if is_in_bounds and new_function_value > old_function_value:
                 old_function_value = new_function_value
@@ -67,6 +77,8 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
                 if schrittweite[para] < 1e-15: continue
                 is_in_bounds = new_point[para] >= mn[para] and new_point[para] <= mx[para] and is_in_bounds
             #print(is_in_bounds)
+            point_data_x = np.append(point_data_x, new_point[0])
+            point_data_y = np.append(point_data_y, new_point[1])
 
             if is_in_bounds and new_function_value > old_function_value:
                 old_function_value = new_function_value
@@ -82,10 +94,17 @@ def strukturiertes_absuchen(function, initial_guess, parameterbereich):
             old_point = new_candidate_point
         else: 
             schrittweite = schrittweite * 0.7
+        
+    fig, ax = plt.subplots()
+    ax.scatter(point_data_x, point_data_y, s=10)
+    ax.set(xlim=parameterbereich[0], ylim=parameterbereich[1])
+    ax.grid(linestyle="--", linewidth=0.5, color='.25', zorder=-10)
+    plt.show()
+    plt.savefig("absuchen.png")
     return old_point
 
 def test_func(werte):
-    return (werte[0]-3.5) ** 2 + werte[1] ** 2 + werte[2] ** 2
+    return (werte[0]-50) ** 2 + werte[1] ** 2
 
 def modifizierte_grundloesung(laenge, breite, vector):
     return grundloesung(laenge, breite, vector[0], vector[1], vector[2], vector[3], vector[4])
@@ -117,4 +136,4 @@ def strukturiertes_absuchen_grundloesung(L, b, h1, h2, Emodul, q, k, alpha):
 
     return M_min, M_max
 
-strukturiertes_absuchen(test_func, np.array([-50,-1,-1.5]), np.array([[-100,200],[-1,-1],[-2,-1]]))
+strukturiertes_absuchen(test_func, np.array([-50,-1]), np.array([[-100,200],[-100,-10]]))
