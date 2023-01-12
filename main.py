@@ -57,22 +57,19 @@ plt.savefig("plot_BruteForce.png")
 
 # Testen des Darwin-Algorithmus -----------------------------------------------------------------------
 startTime_genetic = time.time()
-M_max_array = np.zeros((7, 5))
-i = 0
-for n_gen in (1, 3, 5, 10, 20, 50, 100):
-    for j in range(5):
-        for alpha in [0.0]:
-            M_max = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
-            print('M_max Evolutioniert zuuuuuuu:', M_max)
-            #print('M_min digitiert zuuuuuuu:', M_min)
-            print('----------------')
-            M_max_array[i, j] = M_max
-    i= i +1
-print(M_max_array)
+#M_max_array = np.zeros((7, 5))
+n_gen = 50
+for alpha in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]:
+    M_max, M_min = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
+    print('M_max Evolutioniert zuuuuuuu:', M_max)
+    print('M_min digitiert zuuuuuuu:', M_min)
+    print('----------------')
+    #M_max_array[i, j] = M_max
+
     # Erstellung Plot des jeweiligen alpha-lvl Intervalls
-    #x_coordinates = [M_min, M_max]
-    #y_coordinates = [alpha, alpha]
-    #plt.plot(x_coordinates, y_coordinates, color="navy")
+    x_coordinates = [M_min, M_max]
+    y_coordinates = [alpha, alpha]
+    plt.plot(x_coordinates, y_coordinates, color="navy")
 
     # Erstellen Plot von Streuung zu Nummer von Generationen
 

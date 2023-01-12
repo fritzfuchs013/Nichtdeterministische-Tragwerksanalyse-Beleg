@@ -139,4 +139,4 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
     M_min = population[0, 5]
 
 
-    return M_max
+    return M_max, M_min
