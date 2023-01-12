@@ -140,3 +140,5 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
 
 
     return M_max, M_min
+
+#Hurensohn
