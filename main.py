@@ -58,7 +58,8 @@ plt.savefig("plot_BruteForce.png")
 
 # Testen des Darwin-Algorithmus -----------------------------------------------------------------------
 for alpha in [0.0]:
-    print(genetic_algorithm(L, b, h1, h2, E, q, k, alpha))
+    M_max = genetic_algorithm(L, b, h1, h2, E, q, k, alpha)
+    print('M_max Evolutioniert zuuuuuuu:', M_max)
 
 
 # Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
