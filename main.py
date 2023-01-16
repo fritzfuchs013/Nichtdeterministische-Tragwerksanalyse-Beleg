@@ -4,9 +4,10 @@ from bruteforce import *
 from gausgrit import *
 from genetic import *
 from absuchen import *
-from fuzzy import * 
+from fuzzy import *
+from grundloesung_Feld import *
 
-
+"""
 # Initiierung Fuzzy-Analyse -----------------------------------------------------------------
 # Eingabegrößen aus Aufgabenstellung
 L = 10
@@ -87,9 +88,20 @@ print('benötigte Zeit:', elapsed_time_genetic)
 plt.title("Genetic")
 plt.savefig("plot_genetic.png")
 
-# Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
 """
 
+# Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
+
+M1, M2, X_1, Nullstelle = grundloesung_Feld(10, 0.2, 0.7, 0.5, 2.1 * (10 ** 8), 17.0, 1.4 * (10 ** 4))
+
+print("M2")
+print(M2)
+print(M1)
+print(X_1)
+print(Nullstelle)
+
+
+"""
 start_time = time.time()
 
 for alpha in [0.0, 0.5, 1.0]:
