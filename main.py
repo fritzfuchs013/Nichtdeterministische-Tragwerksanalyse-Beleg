@@ -60,10 +60,11 @@ plt.savefig("plot_BruteForce.png")
 startTime_genetic = time.time()
 #M_max_array = np.zeros((7, 5))
 n_gen = 50
-for alpha in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]:
-    M_max, M_min = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
+for alpha in [0.0, 0.5, 1]:
+    M_max, M_min, aufrufe = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
     print('M_max Evolutioniert zuuuuuuu:', M_max)
     print('M_min digitiert zuuuuuuu:', M_min)
+    print(aufrufe)
     print('----------------')
     #M_max_array[i, j] = M_max
 
