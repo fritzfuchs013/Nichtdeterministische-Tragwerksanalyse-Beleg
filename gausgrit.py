@@ -1,6 +1,6 @@
 # Such Algorythmus, Abstand der Punkte im Intervall sind Gauß-Normal Verteilt. d.h. große Abstände in der Mitte, kleine am Rand
 from scipy.stats import norm
-from grundloesung import *
+from grundloesung_Einspannung import *
 from scipy.integrate import quad
 
 def gauss_grit (L, b, h_1, h_2, E, q, k, sigma, alpha):
