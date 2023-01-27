@@ -103,10 +103,6 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
     for i in range(n_gen):
         population, aufrufe = calc_fitness(population, L, b, aufrufe)
         population = population[np.argsort(population[:, -1])]
-        #print('------------')
-        #print('generation:', i)
-        #print('bestes Individuum:')
-        #print(population[-1, -1])
 
         # Aussortieren der Schlechtesten Indiviuuen
         rows = population.shape[0]

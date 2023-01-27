@@ -20,15 +20,14 @@ print('program has started')
 
 # Testen des Darwin-Algorithmus -----------------------------------------------------------------------
 startTime_genetic = time.time()
-#M_max_array = np.zeros((7, 5))
-n_gen = 50
+n_gen = 25
+
 for alpha in [0.0]:
     M_max, M_min, aufrufe = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
     print('M_max Evolutioniert zuuuuuuu:', M_max)
     print('M_min digitiert zuuuuuuu:', M_min)
     print(aufrufe)
     print('----------------')
-    #M_max_array[i, j] = M_max
 
 # Ende Timer und Bildung Differenz
 endTime_genetic = time.time()
