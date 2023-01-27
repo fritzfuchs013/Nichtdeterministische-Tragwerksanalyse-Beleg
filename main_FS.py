@@ -20,7 +20,7 @@ print('program has started')
 
 # Testen des Darwin-Algorithmus -----------------------------------------------------------------------
 startTime_genetic = time.time()
-n_gen = 2
+n_gen = 25
 
 for alpha in [0.0]:
     M_max, M_min, aufrufe = genetic_algorithm_FS(L, b, h1, h2, E, q, my, alpha, n_gen)

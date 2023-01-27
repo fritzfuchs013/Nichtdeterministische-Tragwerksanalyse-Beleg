@@ -7,7 +7,7 @@ from grundloesung_Feld import grundloesung_Feld
 
 def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
     #Anzahl der Individuen (Muss eine Gerade Zahl sein)
-    n = 20
+    n = 200
     aufrufe = 0
     mutation_rate = 0.0005
 
@@ -24,6 +24,7 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
             if fzzy_Gr == my:
                 my = create_gene(fzzy_Gr, alpha)
                 individuum[i] = give_discrete_Value_for_Quantile(my)
+
             else:
                 individuum[i] = create_gene(fzzy_Gr, alpha)
             i = i + 1
@@ -46,7 +47,6 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
             E  = population[i, 2]
             q  = population[i, 3]
             k  = population[i, 4]
-            print(k)
             population[i, 5] = grundloesung_Feld(L, b, h1, h2, E, q, k)
             aufrufe = aufrufe + 1
         return  population, aufrufe
@@ -89,16 +89,24 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
 
         return population_crossed
 
-    def mutation(population, h1, h2, E, q, k, alpha, mutation_rate):
+    def mutation(population, h1, h2, E, q, mu, alpha, mutation_rate):
         rows = population.shape[0]-1
 
         for i in range(1,rows):   #Keine Mutation des besten/schlechteten Ind. um Vortschritt nicht rückgängig zu machen
             j = 0
 
-            for fzzy_Gr in (h1, h2, E, q, k):
-                low, high = fzzy_Gr.giveIntervall(alpha)
+            for fzzy_Gr in (h1, h2, E, q, mu):
+                if fzzy_Gr == mu:
+                    mu_low, mu_high = fzzy_Gr.giveIntervall(alpha)
+                    low= give_discrete_Value_for_Quantile(mu_low)
+                    high = give_discrete_Value_for_Quantile(mu_high)
+
+                else:
+                    low, high = fzzy_Gr.giveIntervall(alpha)
+
+
                 delta = mutation_rate * np.random.uniform(low, high) * np.random.choice((-1, 1))
-                population [i,j] = population[i, j] + delta
+                population[i, j] = population[i, j] + delta
 
                 if  population [i, j] < low:
                     population [i, j] = low
@@ -107,6 +115,7 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
                     population[i, j] = high
 
                 j = j+1
+
         return population
 
 # optimierung nach M_max: ---------------------------------------------------------
@@ -131,9 +140,6 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
         population = mutation(population, h1, h2, E, q, k, alpha, mutation_rate)
 
     population, aufrufe = calc_fitness_max(population, L, b, aufrufe)
-    for i in range(6):
-        print(population[-0, i])
-    print(population[-0, 5])
     M_max = population[-0, 5]
 
 # optimierung nach M_min: ---------------------------------------------------------
