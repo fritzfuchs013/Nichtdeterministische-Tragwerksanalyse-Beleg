@@ -39,19 +39,17 @@ def grundloesung_Feld(L, b, h_1, h_2, E, q, k):
 
     X_1 = -(delta_10 / delta_11)
 
-    moment_Einspannung = M_0(0.0) + X_1 * M_1(0.0)
-
     def Nullstelle_Q(X_1):
         return L - (X_1 / q)
 
     moment_Feld = M_0(Nullstelle_Q(X_1)) + X_1 * M_1(Nullstelle_Q(X_1))
 
-    Nullstelle = Nullstelle_Q(X_1)
+    # Nullstelle = Nullstelle_Q(X_1)
 
-    #print(M_0(0.0))
-    #print(M_1(0.0))
+    # print(M_0(0.0))
+    # print(M_1(0.0))
 
-    return moment_Einspannung, moment_Feld, X_1, Nullstelle
+    return moment_Feld
 
 
 #m = grundloesung(10, 0.2, 0.7, 0.5, 2.1 * (10 ** 8), 17, 1 * (10 ** 4))

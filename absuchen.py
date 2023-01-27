@@ -4,7 +4,7 @@ import numpy as np
 import numpy.linalg as linalg
 import math
 import scipy
-from grundloesung import grundloesung
+from grundloesung_Einspannung import grundloesung
 from fuzzy import FuzzyTrapez
 # parameterbereich hat n paare an oberen und unteren Grenzen
 # 

@@ -1,4 +1,4 @@
-from grundloesung import *
+from grundloesung_Einspannung import *
 from scipy.integrate import quad
 
 

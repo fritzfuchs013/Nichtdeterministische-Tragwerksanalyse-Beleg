@@ -1,5 +1,5 @@
 import numpy as np
-from grundloesung import *
+from grundloesung_Einspannung import *
 
 def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
     #Anzahl der Individuen (Muss eine Gerade Zahl sein)
