@@ -18,24 +18,6 @@ class NormaldistributedVariable(StochasticVariable):
     rv = norm(self.erwartungswert, self.standardabweichung)
     return rv.rvs()
 
-class LogDistributedVariable(StochasticVariable):
-
-  def __init__(self, erwartungswert, standardabweichung):
-    self.erwartungswert = erwartungswert
-    self.standardabweichung = standardabweichung
-
-  # Aufpassen: Damit sich die Werte "Erwartungswert" und "Standardabweichung" so verhalten wie sich sich verhalten sollen,
-  # sind die Werte so hier transformiert, siehe: https://stackoverflow.com/questions/8870982/how-do-i-get-a-lognormal-distribution-in-python-with-mu-and-sigma?rq=1 !
-  def get_sample(self):
-    mu = self.erwartungswert     # target mean
-    sigma = np.sqrt(self.standardabweichung)  # target varianz
-
-    a = 1 + (sigma / mu) ** 2
-    s = np.sqrt(np.log(a))
-    scale = mu / np.sqrt(a)
-    di = lognorm(s=s, scale=scale)
-    return di.rvs()
-
 class ECDF:
 
   def __init__(self, samples):
