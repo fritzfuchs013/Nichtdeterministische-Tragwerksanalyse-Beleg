@@ -3,7 +3,7 @@ from scipy.integrate import quad
 #from scipy.integrate import simps
 
 
-def grundloesung(L, b, h_1, h_2, E, q, k):
+def grundloesung_Einspannung(L, b, h_1, h_2, E, q, k):
 
     def M_0(x):
         return (-q / 2.0) * (x ** 2) + q * L * x - (1 / 2.0) * q * (L ** 2)

@@ -1,5 +1,7 @@
 import numpy as np
-from grundloesung import *
+from grundloesung_Einspannung import grundloesung_Einspannung
+from grundloesung_Feld import grundloesung_Feld
+
 
 def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
     #Anzahl der Individuen (Muss eine Gerade Zahl sein)
@@ -7,21 +9,21 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
     aufrufe = 0
     mutation_rate = 0.0005
 
-    #Liste um Konvergenz zu erzwingen:
-    M_max_list = np.zeros((10))
-    M_min_list = np.zeros((10))
-
     def create_gene(fzzy_Gr, alpha):
         low, high = fzzy_Gr.giveIntervall(alpha)
         gene = np.random.uniform(low, high)
         return gene
 
-    def create_individuum(h1, h2, E, q, k, alpha):
+    def create_individuum(h1, h2, E, q, my, alpha):
         individuum = np.zeros((6))
 
         i = 0
-        for fzzy_Gr in (h1, h2, E, q, k):
-            individuum[i] = create_gene(fzzy_Gr, alpha)
+        for fzzy_Gr in (h1, h2, E, q, my):
+            if fzzy_Gr == my:
+                my = create_gene(fzzy_Gr, alpha)
+                individuum[i] = Verteilungsbums !!!!!!!!!!!!!!!!!!!
+            else:
+                individuum[i] = create_gene(fzzy_Gr, alpha)
             i = i + 1
 
         return individuum
@@ -35,7 +37,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
         return population
 
 
-    def calc_fitness(population, L, b, aufrufe):
+    def calc_fitness_max(population, L, b, aufrufe):
         rows = population.shape[0]
 
         for i in range(rows):
@@ -45,7 +47,22 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
             q  = population[i, 3]
             k  = population[i, 4]
 
-            population[i, 5] = grundloesung(L, b, h1, h2, E, q, k)
+            population[i, 5] = grundloesung_Feld(L, b, h1, h2, E, q, k)
+            aufrufe = aufrufe + 1
+        return  population, aufrufe
+
+
+    def calc_fitness_min(population, L, b, aufrufe):
+        rows = population.shape[0]
+
+        for i in range(rows):
+            h1 = population[i, 0]
+            h2 = population[i, 1]
+            E  = population[i, 2]
+            q  = population[i, 3]
+            k  = population[i, 4]
+
+            population[i, 5] = grundloesung_Einspannung(L, b, h1, h2, E, q, k)
             aufrufe = aufrufe + 1
         return  population, aufrufe
 
@@ -94,14 +111,14 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
 
 # optimierung nach M_max: ---------------------------------------------------------
     population = create_population(h1, h2, E, q, k, alpha, n)
-    population, aufrufe = calc_fitness(population, L, b, aufrufe)
+    population, aufrufe = calc_fitness_max(population, L, b, aufrufe)
     population = population[np.argsort(population[:, -1])]
     for j in range(int(n / 5)):
         # index für "obj=0" löscht die schlechteste fitness, mit "obj=-1" löscht man die beste (je nachdem ob man nach Max or Min optimiert
         population = np.delete(population, obj=0, axis=0)
 
     for i in range(n_gen):
-        population, aufrufe = calc_fitness(population, L, b, aufrufe)
+        population, aufrufe = calc_fitness_max(population, L, b, aufrufe)
         population = population[np.argsort(population[:, -1])]
 
         # Aussortieren der Schlechtesten Indiviuuen
@@ -113,19 +130,19 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
         population = crossover(population)
         population = mutation(population, h1, h2, E, q, k, alpha, mutation_rate)
 
-    population, aufrufe = calc_fitness(population, L, b, aufrufe)
+    population, aufrufe = calc_fitness_max(population, L, b, aufrufe)
     M_max = population[-0, 5]
 
 # optimierung nach M_min: ---------------------------------------------------------
     population = create_population(h1, h2, E, q, k, alpha, n)
-    population, aufrufe = calc_fitness(population, L, b, aufrufe)
+    population, aufrufe = calc_fitness_min(population, L, b, aufrufe)
     population = population[np.argsort(population[:, -1])]
     for j in range(int(n / 5)):
         # index für "obj=0" löscht die schlechteste fitness, mit "obj=-1" löscht man die beste (je nachdem ob man nach Max or Min optimiert
         population = np.delete(population, obj=-1, axis=0)
 
     for i in range(n_gen):
-        population, aufrufe = calc_fitness(population, L, b, aufrufe)
+        population, aufrufe = calc_fitness_min(population, L, b, aufrufe)
         population = population[np.argsort(population[:, -1])]
 
         # Aussortieren der Schlechtesten Indiviuuen
@@ -137,7 +154,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
         population = crossover(population)
         population = mutation(population, h1, h2, E, q, k, alpha, mutation_rate)
 
-    population, aufrufe = calc_fitness(population, L, b, aufrufe)
+    population, aufrufe = calc_fitness_min(population, L, b, aufrufe)
     M_min = population[0, 5]
 
     return M_max, M_min, aufrufe
