@@ -6,6 +6,7 @@ from genetic import *
 from absuchen import *
 from fuzzy import *
 from grundloesung_Feld import *
+from grundloesung_Einspannung import *
 
 """
 # Initiierung Fuzzy-Analyse -----------------------------------------------------------------
@@ -93,13 +94,14 @@ plt.savefig("plot_genetic.png")
 
 # Noch nicht aufgeräumter Test-Krams ------------------------------------------------------------------
 
-M1, M2, X_1, Nullstelle = grundloesung_Feld(10, 0.2, 0.7, 0.5, 2.1 * (10 ** 8), 17.0, 1.4 * (10 ** 4))
+M1 = grundloesung_Feld(10, 0.2, 0.7, 0.5, 2.1 * (10 ** 8), 17.0, 1.4 * (10 ** 4))
 
-print("M2")
-print(M2)
+M2 = grundloesung_Einspannung(10, 0.2, 0.7, 0.5, 2.1 * (10 ** 8), 17.0, 1.4 * (10 ** 4))
+
+
 print(M1)
-print(X_1)
-print(Nullstelle)
+print(M2)
+
 
 
 """
