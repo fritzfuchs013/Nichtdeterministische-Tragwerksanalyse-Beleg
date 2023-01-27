@@ -1,9 +1,11 @@
 import numpy as np
+
+from Logistic_Function import give_discrete_Value_for_Quantile
 from grundloesung_Einspannung import grundloesung_Einspannung
 from grundloesung_Feld import grundloesung_Feld
 
 
-def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
+def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
     #Anzahl der Individuen (Muss eine Gerade Zahl sein)
     n = 200
     aufrufe = 0
@@ -21,7 +23,7 @@ def genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen):
         for fzzy_Gr in (h1, h2, E, q, my):
             if fzzy_Gr == my:
                 my = create_gene(fzzy_Gr, alpha)
-                individuum[i] = Verteilungsbums !!!!!!!!!!!!!!!!!!!
+                individuum[i] = give_discrete_Value_for_Quantile(my)
             else:
                 individuum[i] = create_gene(fzzy_Gr, alpha)
             i = i + 1

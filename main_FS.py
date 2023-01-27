@@ -2,7 +2,7 @@ import time
 from matplotlib import pyplot as plt
 from genetic import *
 from fuzzy import *
-from grundloesung_Feld import *
+from genetic_FS import genetic_algorithm_FS
 
 
 # Initiierung Fuzzy-Analyse -----------------------------------------------------------------
@@ -13,7 +13,7 @@ h1 = FuzzyTrapez(0.65, 0.7, 0.7, 0.75)
 h2 = FuzzyTrapez(0.48, 0.5, 0.5, 0.52)
 E = FuzzyTrapez(2.05 * (10 ** 8), 2.10 * (10 ** 8), 2.12 * (10 ** 8), 2.15 * (10 ** 8))
 q = FuzzyTrapez(14.0, 17.0, 18.5, 22.0)
-k = FuzzyTrapez(0.8 * (10 ** 4), 1.0 * (10 ** 4), 1.0 * (10 ** 4), 1.4 * (10 ** 4))
+my = FuzzyTrapez(0.9, 0.95, 0.95, 1.1)
 
 # Sicherheitsausgabe
 print('program has started')
@@ -23,7 +23,7 @@ startTime_genetic = time.time()
 n_gen = 25
 
 for alpha in [0.0]:
-    M_max, M_min, aufrufe = genetic_algorithm(L, b, h1, h2, E, q, k, alpha, n_gen)
+    M_max, M_min, aufrufe = genetic_algorithm_FS(L, b, h1, h2, E, q, my, alpha, n_gen)
     print('M_max Evolutioniert zuuuuuuu:', M_max)
     print('M_min digitiert zuuuuuuu:', M_min)
     print(aufrufe)
