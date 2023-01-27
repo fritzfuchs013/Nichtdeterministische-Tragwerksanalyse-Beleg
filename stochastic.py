@@ -14,3 +14,5 @@ class NormaldistributedVariable(StochasticVariable):
   def get_sample(self):
     rv = norm(erwartungswert, standardabweichung)
     return rv.rvs()
+
+
