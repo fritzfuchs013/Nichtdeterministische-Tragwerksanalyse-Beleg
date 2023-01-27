@@ -49,7 +49,7 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
             q  = population[i, 3]
             k  = population[i, 4]
 
-            population[i, 5] = grundloesung_Feld(L, b, h1, h2, E, q, k)
+            population[i, 5] = grundloesung_Einspannung(L, b, h1, h2, E, q, k)
             aufrufe = aufrufe + 1
         return  population, aufrufe
 
@@ -133,6 +133,9 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
         population = mutation(population, h1, h2, E, q, k, alpha, mutation_rate)
 
     population, aufrufe = calc_fitness_max(population, L, b, aufrufe)
+    for i in range(6):
+        print(population[-0, i])
+    print(population[-0, 5])
     M_max = population[-0, 5]
 
 # optimierung nach M_min: ---------------------------------------------------------
