@@ -18,17 +18,43 @@ class NormaldistributedVariable(StochasticVariable):
     rv = norm(self.erwartungswert, self.standardabweichung)
     return rv.rvs()
 
+# Überlegung für LogNormalVerteilung https://www.desmos.com/calculator/zjm58uxrkj
+
 class ECDF:
 
   def __init__(self, samples):
     samples.sort()
     self.samples = samples
-
+  # Gibt das q% Quantil der eCDF zurück.
   def quantile(self,q):
     size = samples.len()
-    index = math.floor(q / size)
+    index = int(q / size)
     return self.samples[index]
+  # Hier können noch mehr Funktionen implementiert werden.
 
+class StochasticAnalysis:
+  # Ein Kind der Stochastischen Analyse muss 2 Funktionen implementieren
+  def basefunction(self,stochastic_args):
+    print("Hier sollte die Funktion aufgerufen werden, für die die Stochastische Analyse durchgeführt werden soll!")
+    return 0.0
+
+  # Hier wird ein Array stochastischer Variablen zurückgegeben.
+  def get_stochastic_variables(self):
+    print("Diese Funktion sollte alle Stochastischen Variablen zurückgeben")
+    return []
+
+  # Diese Funktion NICHT überschreiben
+  def stochastic_analysis(self,level_reliability,confidence_interval,threshold_probability):
+    n_sim = (1.0/(1.0 - level_reliability) * threshold_probability * (1.0 -threshold_probability)/ (confidence_interval**2)) # Formel der Folie
+    erg_samples = [] # ergebnisse
+    for i in range(0,int(n_sim)):
+      stoch_vars = self.get_stochastic_variables()
+      stoch_samples = []
+      for j in range(0,stoch_vars.len()):
+        stoch_samples += [stoch_vars[j].get_sample()] # ein sample jeder Variable
+      erg_samples += [self.basefunction(stoch_samples)]
+    eCDF = ECDF(erg_samples)
+    return eCDF
 
 #fck scipy.lognormal!
 #emodul = NormaldistributedVariable(21.0e4,100.0)
