@@ -7,7 +7,7 @@ from grundloesung_Feld import grundloesung_Feld
 
 def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
     #Anzahl der Individuen (Muss eine Gerade Zahl sein)
-    n = 200
+    n = 20
     aufrufe = 0
     mutation_rate = 0.0005
 
@@ -35,21 +35,19 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
 
         for i in range(n-1):
             population = np.vstack((population, create_individuum(h1, h2, E, q, k, alpha)))
-
         return population
 
 
     def calc_fitness_max(population, L, b, aufrufe):
         rows = population.shape[0]
-
         for i in range(rows):
             h1 = population[i, 0]
             h2 = population[i, 1]
             E  = population[i, 2]
             q  = population[i, 3]
             k  = population[i, 4]
-
-            population[i, 5] = grundloesung_Einspannung(L, b, h1, h2, E, q, k)
+            print(k)
+            population[i, 5] = grundloesung_Feld(L, b, h1, h2, E, q, k)
             aufrufe = aufrufe + 1
         return  population, aufrufe
 
@@ -64,7 +62,7 @@ def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
             q  = population[i, 3]
             k  = population[i, 4]
 
-            population[i, 5] = grundloesung_Einspannung(L, b, h1, h2, E, q, k)
+            population[i, 5] = grundloesung_Feld(L, b, h1, h2, E, q, k)
             aufrufe = aufrufe + 1
         return  population, aufrufe
 
