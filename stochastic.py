@@ -2,6 +2,7 @@ import numpy as np
 from scipy.stats import norm 
 from scipy.stats import lognorm 
 from matplotlib import pyplot as plt
+from grundloesung_Feld import grundloesung_Feld
 import math
 
 class StochasticVariable:
@@ -27,7 +28,7 @@ class ECDF:
     self.samples = samples
   # Gibt das q% Quantil der eCDF zurück.
   def quantile(self,q):
-    size = samples.len()
+    size = len(self.samples)
     index = int(q / size)
     return self.samples[index]
   # Hier können noch mehr Funktionen implementiert werden.
@@ -43,34 +44,43 @@ class StochasticAnalysis:
     print("Diese Funktion sollte alle Stochastischen Variablen zurückgeben")
     return []
 
-  # Diese Funktion NICHT überschreiben
-  def stochastic_analysis(self,level_reliability,confidence_interval,threshold_probability):
+  # Diese Funktion NICHT überschreiben alpha, epsilon, Pf
+  def stochastic_analysis(self,level_reliability=0.95,confidence_interval=1e-3,threshold_probability=0.95):
     n_sim = (1.0/(1.0 - level_reliability) * threshold_probability * (1.0 -threshold_probability)/ (confidence_interval**2)) # Formel der Folie
+    print("Anzahl der Monte Carlo Samples = ",n_sim)
     erg_samples = [] # ergebnisse
     for i in range(0,int(n_sim)):
       stoch_vars = self.get_stochastic_variables()
       stoch_samples = []
-      for j in range(0,stoch_vars.len()):
+      for j in range(0,len(stoch_vars)):
         stoch_samples += [stoch_vars[j].get_sample()] # ein sample jeder Variable
       erg_samples += [self.basefunction(stoch_samples)]
     eCDF = ECDF(erg_samples)
     return eCDF
 
-#fck scipy.lognormal!
-#emodul = NormaldistributedVariable(21.0e4,100.0)
-#federsteif = LogDistributedVariable(21.0,100.0)
+# Nutzungsweise von StochasticAnalysis:
+# Implementierung der Grundlösung als "Kind" der Klasse
+class GrundloesungFeld(StochasticAnalysis):
+  # Der Initblock, hier alle deterministischen Ausprägungen aller NICHT stochastischen Variablen implementieren
+  def __init__(self, laenge, breite, hoehe1, hoehe2, emodul, qbelast):
+    self.laenge = laenge
+    self.breite = breite
+    self.hoehe1 = hoehe1
+    self.hoehe2 = hoehe2
+    self.emodul = emodul
+    self.qbelast = qbelast
+  # Implementierung der Grundlösung, wo nur noch stochastische Variablen dazugegeben werden:
+  def basefunction(self,stochastic_args):
+    return grundloesung_Feld(self.laenge, self.breite, self.hoehe1, self.hoehe2, self.emodul, self.qbelast, stochastic_args[0])
 
-#indezes = []
-#emodulsample = []
-#federsteifsample = []
-#for i in range(0,1000):
-#  emodulsample += [emodul.get_sample()]
-#  federsteifsample += [federsteif.get_sample()]
-#  indezes += [i*1/1000]
+  # Implementierung der Stochastischen Variablen 
+  def get_stochastic_variables(self):
+    return [NormaldistributedVariable(21.0e4,100.0)]
 
-#emodulsample.sort()
-#federsteifsample.sort()
+# Klassendeklaration Ende
+# Abschließend GrundloseungFeld instanziieren (in der Alpha Level Optimierung) und `stochastic_analysis()` ausführen.
 
-#plt.plot(federsteifsample, indezes, color="navy")
-#plt.plot(federsteifsample, indezes, color="navy")
-#plt.show()
+grundFeld = GrundloesungFeld(8.0,0.6,0.3,0.2,21e7,50)
+ecdf = grundFeld.stochastic_analysis(confidence_interval=1e-2)
+quantil50 = ecdf.quantile(0.5)
+print(quantil50)
