@@ -22,13 +22,16 @@ print('program has started')
 startTime_genetic = time.time()
 n_gen = 25
 
-for alpha in [0.0]:
+for alpha in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]:
     M_max, M_min, aufrufe = genetic_algorithm_FS(L, b, h1, h2, E, q, my, alpha, n_gen)
+    x_coordinates = [M_min, M_max]
+    y_coordinates = [alpha, alpha]
+    plt.plot(x_coordinates, y_coordinates, color="navy")
     print('M_max Evolutioniert zuuuuuuu:', M_max)
     print('M_min digitiert zuuuuuuu:', M_min)
     print(aufrufe)
     print('----------------')
-
+plt.savefig("Fuzzy_stochastisch_Feld_05_quantil.png")
 # Ende Timer und Bildung Differenz
 endTime_genetic = time.time()
 elapsed_time_genetic = endTime_genetic - startTime_genetic
