@@ -1,5 +1,6 @@
 import numpy as np
-from scipy.stats import norm 
+from scipy.stats import norm
+from scipy.stats import logistic
 from scipy.stats import lognorm 
 from matplotlib import pyplot as plt
 from grundloesung_Feld import grundloesung_Feld
@@ -20,6 +21,16 @@ class NormaldistributedVariable(StochasticVariable):
     return rv.rvs()
 
 # Überlegung für LogNormalVerteilung https://www.desmos.com/calculator/zjm58uxrkj
+
+class LogisticdistributedVariable(StochasticVariable):
+
+  def __init__(self, erwartungswert, standardabweichung):
+    self.erwartungswert = erwartungswert
+    self.standardabweichung = standardabweichung
+
+  def get_sample(self):
+    rv = logistic(self.erwartungswert, self.standardabweichung)
+    return rv.rvs()
 
 class ECDF:
 
@@ -62,25 +73,28 @@ class StochasticAnalysis:
 # Implementierung der Grundlösung als "Kind" der Klasse
 class GrundloesungFeld(StochasticAnalysis):
   # Der Initblock, hier alle deterministischen Ausprägungen aller NICHT stochastischen Variablen implementieren
-  def __init__(self, laenge, breite, hoehe1, hoehe2, emodul, qbelast):
+  def __init__(self, laenge, breite, hoehe1, hoehe2, emodul, qbelast, mu_feder):
     self.laenge = laenge
     self.breite = breite
     self.hoehe1 = hoehe1
     self.hoehe2 = hoehe2
     self.emodul = emodul
     self.qbelast = qbelast
+    self.mu_feder = mu_feder
   # Implementierung der Grundlösung, wo nur noch stochastische Variablen dazugegeben werden:
   def basefunction(self,stochastic_args):
     return grundloesung_Feld(self.laenge, self.breite, self.hoehe1, self.hoehe2, self.emodul, self.qbelast, stochastic_args[0])
 
   # Implementierung der Stochastischen Variablen 
   def get_stochastic_variables(self):
-    return [NormaldistributedVariable(21.0e4,100.0)]
+    # return [NormaldistributedVariable(self.mu_feder,100.0)]
+    return [LogisticdistributedVariable(self.mu_feder, 0.07)]
 
 # Klassendeklaration Ende
 # Abschließend GrundloseungFeld instanziieren (in der Alpha Level Optimierung) und `stochastic_analysis()` ausführen.
 
-grundFeld = GrundloesungFeld(8.0,0.6,0.3,0.2,21e7,50)
+
+grundFeld = GrundloesungFeld(10, 0.2, 0.7, 0.5, 2.1e8, 17.0, 1.0e4)
 ecdf = grundFeld.stochastic_analysis(confidence_interval=1e-2)
 quantil50 = ecdf.quantile(0.5)
 print(quantil50)
