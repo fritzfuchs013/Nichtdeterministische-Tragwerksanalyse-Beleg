@@ -97,4 +97,4 @@ class GrundloesungFeld(StochasticAnalysis):
 grundFeld = GrundloesungFeld(10, 0.2, 0.7, 0.5, 2.1e8, 17.0, 1.0e4)
 ecdf = grundFeld.stochastic_analysis(confidence_interval=1e-2)
 quantil50 = ecdf.quantile(0.5)
-print(quantil50)
+print("Moment:", quantil50)
