@@ -8,7 +8,7 @@ from stochastic import GrundloesungFeld
 
 def genetic_algorithm_FS(L, b, h1, h2, E, q, k, alpha, n_gen):
     #Anzahl der Individuen (Muss eine Gerade Zahl sein)
-    n = 20
+    n = 20      #ursprünglich 200
     aufrufe = 0
     mutation_rate = 0.0005
 
