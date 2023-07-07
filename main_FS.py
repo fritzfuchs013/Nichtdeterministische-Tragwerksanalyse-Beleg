@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from genetic import *
 from fuzzy import *
 from genetic_FS import genetic_algorithm_FS
+from absuchen import *
 import stochastic
 
 
@@ -24,13 +25,13 @@ startTime_genetic = time.time()
 n_gen = 10 #ursprünglich 20
 
 for alpha in [0.0, 0.5, 0.99]:
-    M_max, M_min, aufrufe = genetic_algorithm_FS(L, b, h1, h2, E, q, my, alpha, n_gen)
+    M_max, M_min = strukturiertes_absuchen_grundloesung(L, b, h1, h2, E, q, my, alpha)
     x_coordinates = [M_min, M_max]
     y_coordinates = [alpha, alpha]
     plt.plot(x_coordinates, y_coordinates, color="navy")
     print('Maximales Feldmoment mit 90% Quantil für alpha Level:', alpha, 'ist:', M_max)
     print('Minnimales Feldmoment mit 90% Quantil für alpha Level:', alpha, 'ist:', M_min)
-    print(aufrufe)
+    # print(aufrufe)
     print('----------------')
 plt.savefig("Fuzzy_stochastisch_Feld_05_quantil.png")
 # Ende Timer und Bildung Differenz

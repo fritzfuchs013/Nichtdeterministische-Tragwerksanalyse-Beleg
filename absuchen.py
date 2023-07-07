@@ -5,6 +5,7 @@ import numpy.linalg as linalg
 import math
 import scipy
 from grundloesung_Einspannung import grundloesung_Einspannung
+from stochastic import GrundloesungFeld
 from fuzzy import FuzzyTrapez
 # parameterbereich hat n paare an oberen und unteren Grenzen
 # 
@@ -88,10 +89,14 @@ def test_func(werte):
     return (werte[0]-3.5) ** 2 + werte[1] ** 2 + werte[2] ** 2
 
 def modifizierte_grundloesung(laenge, breite, vector):
-    return grundloesung(laenge, breite, vector[0], vector[1], vector[2], vector[3], vector[4])
+    grundFeld = GrundloesungFeld(laenge, breite, vector[0], vector[1], vector[2], vector[3], vector[4])
+    ecdf = grundFeld.stochastic_analysis(confidence_interval=1e-1)
+    return ecdf.quantile(0.9)
 
 def modifizierte_grundloesung_max(laenge, breite, vector):
-    return -grundloesung(laenge, breite, vector[0], vector[1], vector[2], vector[3], vector[4])
+    grundFeld = GrundloesungFeld(laenge, breite, vector[0], vector[1], vector[2], vector[3], vector[4])
+    ecdf = grundFeld.stochastic_analysis(confidence_interval=1e-1)
+    return -ecdf.quantile(0.9)
 
 def strukturiertes_absuchen_grundloesung(L, b, h1, h2, Emodul, q, k, alpha):
     # l = konst
