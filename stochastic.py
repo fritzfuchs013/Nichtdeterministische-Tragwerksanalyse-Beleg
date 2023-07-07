@@ -57,8 +57,8 @@ class StochasticAnalysis:
 
   # Diese Funktion NICHT überschreiben alpha, epsilon, Pf
   def stochastic_analysis(self,level_reliability=0.95,confidence_interval=1e-3,threshold_probability=0.95):
-    n_sim = (1.0/(1.0 - level_reliability) * threshold_probability * (1.0 -threshold_probability)/ (confidence_interval**2)) # Formel der Folie
-    print("Anzahl der Monte Carlo Samples = ",n_sim)
+    n_sim = 100 #(1.0/(1.0 - level_reliability) * threshold_probability * (1.0 -threshold_probability)/ (confidence_interval**2)) # Formel der Folie
+    #print("Anzahl der Monte Carlo Samples = ",n_sim)
     erg_samples = [] # ergebnisse
     for i in range(0,int(n_sim)):
       stoch_vars = self.get_stochastic_variables()
@@ -94,7 +94,7 @@ class GrundloesungFeld(StochasticAnalysis):
 # Abschließend GrundloseungFeld instanziieren (in der Alpha Level Optimierung) und `stochastic_analysis()` ausführen.
 
 
-grundFeld = GrundloesungFeld(10, 0.2, 0.7, 0.5, 2.1e8, 17.0, 1.0e4)
-ecdf = grundFeld.stochastic_analysis(confidence_interval=1e-2)
-quantil50 = ecdf.quantile(0.5)
-print("Moment:", quantil50)
+#grundFeld = GrundloesungFeld(10, 0.2, 0.7, 0.5, 2.1e8, 17.0, 1.0e4)
+#ecdf = grundFeld.stochastic_analysis(confidence_interval=1e-2)
+#quantil50 = ecdf.quantile(0.5)
+#print("Moment:", quantil50)
